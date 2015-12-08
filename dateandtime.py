@@ -39,7 +39,7 @@ def date2id (year,date):
 url='http://www.timeanddate.com/holidays/sweden/2015'
 req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
 cont = urllib2.urlopen(req).read()
-soup = BeautifulSoup(cont)
+soup = BeautifulSoup(cont, "lxml")
 
 for tr in soup.find('tbody').findAll('tr'):
     date = tr.th.text
@@ -47,6 +47,15 @@ for tr in soup.find('tbody').findAll('tr'):
     # print date,
     print id,
     print tr.td.nextSibling.text
+    url = 'http://www.timeanddate.com'+tr.td.nextSibling.a['href']
+    req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
+    cont = urllib2.urlopen(req).read()
+    soup1 = BeautifulSoup(cont, "lxml")
+    try:
+        print soup1.find('p',{'class':'lead'}).text
+    except:
+        pass
+    # break
 
 
 
